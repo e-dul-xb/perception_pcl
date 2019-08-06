@@ -198,8 +198,8 @@ class_loader_hide_library_symbols(pcl_ros_surface)
 
 ## Tools
 
-#add_executable(pcd_to_pointcloud tools/pcd_to_pointcloud.cpp)
-#target_link_libraries(pcd_to_pointcloud ${Boost_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_executable(pcd_to_pointcloud tools/pcd_to_pointcloud.cpp)
+target_link_libraries(pcd_to_pointcloud ${Boost_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
 add_executable(pointcloud_to_pcd tools/pointcloud_to_pcd.cpp)
 target_link_libraries(pointcloud_to_pcd ${Boost_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
@@ -257,7 +257,7 @@ install(
 
 install(
   TARGETS
-#    pcd_to_pointcloud
+    pcd_to_pointcloud
     pointcloud_to_pcd
     bag_to_pcd
     convert_pcd_to_image

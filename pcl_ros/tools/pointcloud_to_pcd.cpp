@@ -34,6 +34,8 @@
  * $Id: pointcloud_to_pcd.cpp 33238 2010-03-11 00:46:58Z rusu $
  *
  */
+#include <stdlib.h>
+
 
 // ROS core
 #include <ros/ros.h>
@@ -72,6 +74,8 @@ class PointCloudToPCD
     std::string filename_;
     bool binary_;
     bool compressed_;
+    int count_;
+    int current_count_;
     std::string fixed_frame_;
     tf2_ros::Buffer tf_buffer_;
     tf2_ros::TransformListener tf_listener_;
@@ -136,11 +140,14 @@ class PointCloudToPCD
 	{
 	  writer.writeASCII (ss.str (), *cloud, v, q, 8);
 	}
-
+	current_count_++;
+	if (count_ > 0 && current_count_ >= count_){
+          exit(EXIT_SUCCESS);
+	}
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    PointCloudToPCD () : binary_(false), compressed_(false), tf_listener_(tf_buffer_)
+    PointCloudToPCD () : binary_(false), compressed_(false), count_(-1), current_count_(0), tf_listener_(tf_buffer_)
     {
       // Check if a prefix parameter is defined for output file names.
       ros::NodeHandle priv_nh("~");
@@ -158,6 +165,8 @@ class PointCloudToPCD
       priv_nh.getParam ("binary", binary_);
       priv_nh.getParam ("compressed", compressed_);
       priv_nh.getParam ("filename", filename_);
+      priv_nh.getParam ("count", count_);
+      ROS_WARN_STREAM ("count: " << count_);
       if(binary_)
 	{
 	  if(compressed_)
